@@ -11,23 +11,30 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.quicksale.dtos.ErrorDTO;
+import com.quicksale.dtos.MessageDTO;
 
+/**
+ * Controller advice class to handle different type of exception that can occur
+ * during application runtime
+ * 
+ * @author ashishr
+ *
+ */
 @ControllerAdvice
 public class APIExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorDTO> handleException(Exception e) {
+	public ResponseEntity<MessageDTO> handleException(Exception e) {
 		String errorMessage = e.getMessage();
 		if (e instanceof NullPointerException) {
 			errorMessage = errorMessage != null ? errorMessage : "INTERNAL_SERVER_ERROR";
 		}
-		return new ResponseEntity<>(new ErrorDTO(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(new MessageDTO(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler({ MethodArgumentNotValidException.class, BindException.class,
 			HttpMessageNotReadableException.class, HttpRequestMethodNotSupportedException.class })
-	public ResponseEntity<ErrorDTO> handleDataValidationException(Exception e) {
+	public ResponseEntity<MessageDTO> handleDataValidationException(Exception e) {
 		String errorMessage = null;
 
 		if (e instanceof BindException) {
@@ -44,16 +51,16 @@ public class APIExceptionHandler {
 			errorMessage = he.getMessage();
 		}
 
-		return new ResponseEntity<>(new ErrorDTO(errorMessage), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new MessageDTO(errorMessage), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(APIException.class)
-	public ResponseEntity<ErrorDTO> handleDataValidationException(APIException e) {
-		return new ResponseEntity<>(new ErrorDTO(e.getErrorMessage()), e.getStatus());
+	public ResponseEntity<MessageDTO> handleDataValidationException(APIException e) {
+		return new ResponseEntity<>(new MessageDTO(e.getErrorMessage()), e.getStatus());
 	}
 
 	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<ErrorDTO> handleAccessDeniedException(AccessDeniedException e) {
-		return new ResponseEntity<>(new ErrorDTO(e.getMessage()), HttpStatus.FORBIDDEN);
+	public ResponseEntity<MessageDTO> handleAccessDeniedException(AccessDeniedException e) {
+		return new ResponseEntity<>(new MessageDTO(e.getMessage()), HttpStatus.FORBIDDEN);
 	}
 }

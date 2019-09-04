@@ -7,8 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+/**
+ * Model class to represent registered user table
+ * 
+ * @author ashishr
+ *
+ */
 @Entity
-public class UserPurchasedProduct {
+public class RegisteredUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +29,15 @@ public class UserPurchasedProduct {
 	private Product product;
 
 	private int purchaseCount;
+
+	public RegisteredUser() {
+	}
+
+	public RegisteredUser(User user, Product product, int purchaseCount) {
+		this.user = user;
+		this.product = product;
+		this.purchaseCount = purchaseCount;
+	}
 
 	public int getId() {
 		return id;

@@ -7,6 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+/**
+ * Model class to represent inventory table
+ * 
+ * @author ashishr
+ *
+ */
 @Entity
 public class Inventory {
 
@@ -18,7 +24,7 @@ public class Inventory {
 	@JoinColumn(name = "productId", referencedColumnName = "id")
 	private Product product;
 	private int count;
-	
+
 	public Inventory() {
 	}
 

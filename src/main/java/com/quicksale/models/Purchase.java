@@ -9,6 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+/**
+ * Model class to represent Purchase table
+ * 
+ * @author ashishr
+ *
+ */
 @Entity
 public class Purchase {
 
@@ -24,6 +30,15 @@ public class Purchase {
 	@JoinColumn(name = "userId", referencedColumnName = "id")
 	private User user;
 	private Date timeOfPurchase;
+
+	public Purchase() {
+	}
+
+	public Purchase(Product product, User user, Date timeOfPurchase) {
+		this.product = product;
+		this.user = user;
+		this.timeOfPurchase = timeOfPurchase;
+	}
 
 	public int getId() {
 		return id;

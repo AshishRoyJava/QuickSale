@@ -10,6 +10,12 @@ import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Model class to represent User table
+ * 
+ * @author ashishr
+ *
+ */
 @Entity
 public class User {
 
@@ -24,18 +30,18 @@ public class User {
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "user")
-	private UserPurchasedProduct registeredUser;
-	
+	private RegisteredUser registeredUser;
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "product")
 	private Purchase purchase;
-	
+
 	public User(String name, String address, String email) {
 		this.name = name;
 		this.address = address;
 		this.email = email;
 	}
-	
+
 	public User() {
 		super();
 	}
@@ -72,11 +78,11 @@ public class User {
 		this.email = email;
 	}
 
-	public UserPurchasedProduct getRegisteredUser() {
+	public RegisteredUser getRegisteredUser() {
 		return registeredUser;
 	}
 
-	public void setRegisteredUser(UserPurchasedProduct registeredUser) {
+	public void setRegisteredUser(RegisteredUser registeredUser) {
 		this.registeredUser = registeredUser;
 	}
 

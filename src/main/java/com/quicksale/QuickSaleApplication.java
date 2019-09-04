@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.quicksale.models.Inventory;
 import com.quicksale.models.Product;
@@ -22,6 +23,7 @@ import com.quicksale.repositories.ProductRepository;
 import com.quicksale.repositories.UserRepository;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class QuickSaleApplication {
 
 	@Autowired
@@ -31,10 +33,18 @@ public class QuickSaleApplication {
 		SpringApplication.run(QuickSaleApplication.class, args);
 	}
 
+	/**
+	 * Load users into database on application start. This is just to insert dummy
+	 * data into the database. Must be removed before production deploy.
+	 * 
+	 * @param userRepository {@link UserRepository}
+	 * @return
+	 */
 	@Bean
 	public CommandLineRunner loadUsers(UserRepository userRepository) {
 
-		Stream<String> userStream = Stream.of("ABC, Hyderabad, abc@gmail.com", "DEF, Hyderabad, def@gmail.com");
+		Stream<String> userStream = Stream.of("ABC, Hyderabad, ashishroy077@gmail.com",
+				"DEF, Hyderabad, def@gmail.com");
 
 		List<User> users = new ArrayList<>();
 		userStream.forEach(userString -> {
@@ -47,6 +57,12 @@ public class QuickSaleApplication {
 		};
 	}
 
+	/**
+	 * Load products and inventory records into database. Must be removed before production deployment
+	 * @param productRepository {@link ProductRepository}
+	 * @param inventoryRepository {@link InventoryRepository}
+	 * @return
+	 */
 	@Bean
 	public CommandLineRunner loadProductsAndInventory(ProductRepository productRepository,
 			InventoryRepository inventoryRepository) {
@@ -64,17 +80,25 @@ public class QuickSaleApplication {
 				Inventory inventory = new Inventory(savedProduct, 20);
 				inventoryRepository.save(inventory);
 			});
-			loadInventoryToContext(inventoryRepository);
 		};
 	}
 
-	public void loadInventoryToContext(InventoryRepository inventoryRepository) {
-		List<Inventory> inventories = inventoryRepository.findAll();
-		Map<Integer, Integer> inventoryMap = new HashMap<>();
-		for (Inventory inventory : inventories) {
-			inventoryMap.put(inventory.getProduct().getId(), inventory.getCount());
-		}
-		servletContext.setAttribute("stock", inventoryMap);
+	/**
+	 * This method loads the current inventory record into context.
+	 * @param inventoryRepository {@link InventoryRepository}
+	 * @return
+	 */
+	@Bean
+	public CommandLineRunner loadInventoryToContext(InventoryRepository inventoryRepository) {
+		return args -> {
+			List<Inventory> inventories = inventoryRepository.findAll();
+			Map<Integer, Integer> inventoryMap = new HashMap<>();
+			for (Inventory inventory : inventories) {
+				inventoryMap.put(inventory.getProduct().getId(), inventory.getCount());
+			}
+			servletContext.setAttribute("stock", inventoryMap);
+			System.out.println(servletContext.getAttribute("stock"));
+		};
 	}
 
 }

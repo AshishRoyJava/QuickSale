@@ -2,7 +2,13 @@ package com.quicksale.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class APIException extends RuntimeException{
+/**
+ * Custom application exception class
+ * 
+ * @author ashishr
+ *
+ */
+public class APIException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	private final String errorMessage;

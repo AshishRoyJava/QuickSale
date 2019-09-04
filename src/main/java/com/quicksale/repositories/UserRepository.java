@@ -5,7 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import com.quicksale.models.User;
 
+/**
+ * Repository interface for User related operations
+ * 
+ * @author ashishr
+ *
+ */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>{
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 }

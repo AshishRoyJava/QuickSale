@@ -1,14 +1,20 @@
 package com.quicksale.dtos;
 
-public class ErrorDTO {
+/**
+ * DTO class for response messages
+ * 
+ * @author ashishr
+ *
+ */
+public class MessageDTO {
 
 	private String message;
 
-	public ErrorDTO(String message) {
+	public MessageDTO(String message) {
 		this.message = message;
 	}
 
-	public ErrorDTO() {
+	public MessageDTO() {
 	}
 
 	public String getMessage() {

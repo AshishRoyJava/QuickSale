@@ -8,6 +8,12 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Model class to represent Product table
+ * 
+ * @author ashishr
+ *
+ */
 @Entity
 public class Product {
 
@@ -17,15 +23,15 @@ public class Product {
 	private String name;
 	private String details;
 	private double price;
-	
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "product")
-	private UserPurchasedProduct userPurchasedProduct;
-	
+	private RegisteredUser registeredUser;
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "product")
 	private Inventory inventory;
-	
+
 	@JsonIgnore
 	@OneToOne(mappedBy = "product")
 	private Purchase purchase;
@@ -71,12 +77,12 @@ public class Product {
 		this.price = price;
 	}
 
-	public UserPurchasedProduct getUserPurchasedProduct() {
-		return userPurchasedProduct;
+	public RegisteredUser getRegisteredUser() {
+		return registeredUser;
 	}
 
-	public void setUserPurchasedProduct(UserPurchasedProduct userPurchasedProduct) {
-		this.userPurchasedProduct = userPurchasedProduct;
+	public void setRegisteredUser(RegisteredUser registeredUser) {
+		this.registeredUser = registeredUser;
 	}
 
 	public Inventory getInventory() {
