@@ -16,6 +16,20 @@ public class PurchaseDTO {
 	private String productDescription;
 	private double productPrice;
 	private Date timeofPurchase;
+	
+	public PurchaseDTO() {
+	}
+
+	public PurchaseDTO(String userName, String userAddress, String userEmail, String productName,
+			String productDescription, double productPrice, Date timeofPurchase) {
+		this.userName = userName;
+		this.userAddress = userAddress;
+		this.userEmail = userEmail;
+		this.productName = productName;
+		this.productDescription = productDescription;
+		this.productPrice = productPrice;
+		this.timeofPurchase = timeofPurchase;
+	}
 
 	public String getUserName() {
 		return userName;

@@ -84,7 +84,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		User user = validationUtils.validateUser(usPurchaseDTO.getUserId());
 		Product product = validationUtils.validateProduct(usPurchaseDTO.getProductId());
 
-		// check id the use has already purchased the produt
+		// check id the use has already purchased the product
 		if (validationUtils.hasUserAlreadyPurchasedProduct(user, product)) {
 			return new MessageDTO("You have already purchased the product. The quantity is limited to 1 per user");
 		}

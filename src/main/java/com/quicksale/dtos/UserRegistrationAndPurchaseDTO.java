@@ -11,6 +11,14 @@ public class UserRegistrationAndPurchaseDTO {
 	private int userId;
 	private int productId;
 
+	public UserRegistrationAndPurchaseDTO() {
+	}
+
+	public UserRegistrationAndPurchaseDTO(int userId, int productId) {
+		this.userId = userId;
+		this.productId = productId;
+	}
+
 	public int getUserId() {
 		return userId;
 	}
