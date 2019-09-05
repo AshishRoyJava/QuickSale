@@ -86,6 +86,9 @@ public class ValidationUtils {
 	public boolean hasUserAlreadyPurchasedProduct(User user, Product product) {
 
 		RegisteredUser userPurchase = registeredUserRepository.findByUserAndProduct(user, product);
+		if(null == userPurchase) {
+			throw new APIException("User has not registered for sale", HttpStatus.BAD_REQUEST);
+		}
 		return userPurchase.getPurchaseCount() > 0;
 	}
 }

@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 /**
  * Model class to represent registered user table
@@ -20,11 +20,11 @@ public class RegisteredUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "userId", referencedColumnName = "id")
 	private User user;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "productId", referencedColumnName = "id")
 	private Product product;
 

@@ -1,9 +1,12 @@
 package com.quicksale.models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,8 +28,8 @@ public class Product {
 	private double price;
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "product")
-	private RegisteredUser registeredUser;
+	@OneToMany(mappedBy = "product")
+	private List<RegisteredUser> registeredUser;
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "product")
@@ -77,11 +80,11 @@ public class Product {
 		this.price = price;
 	}
 
-	public RegisteredUser getRegisteredUser() {
+	public List<RegisteredUser> getRegisteredUser() {
 		return registeredUser;
 	}
 
-	public void setRegisteredUser(RegisteredUser registeredUser) {
+	public void setRegisteredUser(List<RegisteredUser> registeredUser) {
 		this.registeredUser = registeredUser;
 	}
 
