@@ -1,5 +1,6 @@
 package com.quicksale.services.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -62,20 +63,21 @@ public class RegisteredUserServiceImpl implements RegisteredUserService {
 		// validate registration time to check if the registration time is over
 		String timeLimit = environment.getProperty("user.registration.time.limit");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date;
 		try {
-			Date date = sdf.parse(timeLimit);
-			long millis = date.getTime();
-			if (System.currentTimeMillis() > millis) {
-				throw new APIException("Registration time limit is over.", HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return new MessageDTO("Failed to parse time");
+			date = sdf.parse(timeLimit);
+		} catch (ParseException e) {
+			throw new APIException("Failed to parse time", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		long millis = date.getTime();
+		if (System.currentTimeMillis() > millis) {
+			throw new APIException("Registration time limit is over.", HttpStatus.BAD_REQUEST);
 		}
 
 		// validate user and product
 		User user = validationUtils.validateUser(userRegistrationDTO.getUserId());
 		Product product = validationUtils.validateProduct(userRegistrationDTO.getProductId());
-		
+
 		// check if the user has already registered for the product
 		RegisteredUser registeredUser = registeredUserRepository.findByUserAndProduct(user, product);
 		if (null != registeredUser) {
@@ -86,7 +88,7 @@ public class RegisteredUserServiceImpl implements RegisteredUserService {
 		try {
 			registeredUserRepository.save(new RegisteredUser(user, product, 0));
 		} catch (Exception e) {
-			return new MessageDTO("Failed to register user");
+			throw new APIException("Failed to register user", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		// Send registration confirmation email
 		emailUtils.sendRegistrationConfirmationEmail(user, product);

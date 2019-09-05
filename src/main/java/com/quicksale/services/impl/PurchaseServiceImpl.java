@@ -1,5 +1,6 @@
 package com.quicksale.services.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -70,14 +71,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 		// validate purchase time to check if the sale has started
 		String timeLimit = environment.getProperty("user.purchase.time.start");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date;
 		try {
-			Date date = sdf.parse(timeLimit);
-			long millis = date.getTime();
-			if (System.currentTimeMillis() < millis) {
-				throw new APIException("Sale has not started yet.", HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return new MessageDTO("Failed to parse time");
+			date = sdf.parse(timeLimit);
+		} catch (ParseException e) {
+			throw new APIException("Failed to parse time", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		long millis = date.getTime();
+		if (System.currentTimeMillis() < millis) {
+			throw new APIException("Sale has not started yet.", HttpStatus.BAD_REQUEST);
 		}
 
 		// validate user and product
@@ -86,7 +88,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 		// check id the use has already purchased the product
 		if (validationUtils.hasUserAlreadyPurchasedProduct(user, product)) {
-			return new MessageDTO("You have already purchased the product. The quantity is limited to 1 per user");
+			throw new APIException("You have already purchased the product. The quantity is limited to 1 per user", HttpStatus.BAD_REQUEST);
 		}
 
 		// Decrease quantity from stock. This is done in a synchronized block to avoid
@@ -96,11 +98,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 			int productStock = stock.get(usPurchaseDTO.getProductId());
 			if (productStock > 0) {
 				productStock--;
+				stock.put(usPurchaseDTO.getProductId(), productStock);
+				servletContext.setAttribute("stock", stock);
 			} else {
-				return new MessageDTO("Sorry, Product is out of stock");
+				throw new APIException("Sorry, Product is out of stock", HttpStatus.BAD_REQUEST);
 			}
-			stock.put(usPurchaseDTO.getProductId(), productStock);
-			servletContext.setAttribute("stock", stock);
 		}
 
 		// execute purchase order in a different thread
