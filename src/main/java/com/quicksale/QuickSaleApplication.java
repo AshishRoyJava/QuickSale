@@ -97,7 +97,6 @@ public class QuickSaleApplication {
 				inventoryMap.put(inventory.getProduct().getId(), inventory.getCount());
 			}
 			servletContext.setAttribute("stock", inventoryMap);
-			System.out.println(servletContext.getAttribute("stock"));
 		};
 	}
 

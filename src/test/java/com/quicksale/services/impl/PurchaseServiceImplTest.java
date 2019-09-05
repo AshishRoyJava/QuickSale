@@ -94,7 +94,7 @@ public class PurchaseServiceImplTest {
 		
 		verify(purchaseRepositoryMock, times(1)).findAll();
 		verifyNoMoreInteractions(purchaseRepositoryMock);
-		verify(purchaseUtilsMock, times(1)).mapPurchaseToDTO(Arrays.asList(first, second));
+		verify(purchaseUtilsMock, times(1)).mapPurchaseToDTO(anyList());
 		verifyNoMoreInteractions(purchaseUtilsMock);
 		
 		assertThat(allPurchases.size(), is(2));
@@ -134,7 +134,7 @@ public class PurchaseServiceImplTest {
 
 		purchaseServiceImplMock.purchaseProduct(userRegistrationDTO);
 
-		verify(environmentMock, times(1)).getProperty("user.purchase.time.start");
+		verify(environmentMock, times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
 
 	}
@@ -159,11 +159,11 @@ public class PurchaseServiceImplTest {
 				.thenReturn(true);
 
 		purchaseServiceImplMock.purchaseProduct(userRegistrationDTO);
-		verify(environmentMock,times(1)).getProperty("user.purchase.time.start");
+		verify(environmentMock,times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
-		verify(validationUtilsMock, times(1)).validateUser(user.getId());
-		verify(validationUtilsMock, times(1)).validateProduct(product.getId());
-		verify(validationUtilsMock, times(1)).hasUserAlreadyPurchasedProduct(user, product);
+		verify(validationUtilsMock, times(1)).validateUser(any(Integer.class));
+		verify(validationUtilsMock, times(1)).validateProduct(any(Integer.class));
+		verify(validationUtilsMock, times(1)).hasUserAlreadyPurchasedProduct(any(User.class), any(Product.class));
 		verifyNoMoreInteractions(validationUtilsMock);
 
 	}
@@ -194,12 +194,12 @@ public class PurchaseServiceImplTest {
 		when(((Map<Integer, Integer>)servletContextMock.getAttribute(any(String.class)))).thenReturn(stockMapMock);
 
 		purchaseServiceImplMock.purchaseProduct(purchaseDTO);
-		verify(environmentMock,times(1)).getProperty("user.purchase.time.start");
+		verify(environmentMock,times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
-		verify(validationUtilsMock, times(1)).validateUser(user.getId());
-		verify(validationUtilsMock, times(1)).validateProduct(product.getId());
-		verify(validationUtilsMock, times(1)).hasUserAlreadyPurchasedProduct(user, product);
-		verify(servletContextMock, times(1)).getAttribute("stock");
+		verify(validationUtilsMock, times(1)).validateUser(any(Integer.class));
+		verify(validationUtilsMock, times(1)).validateProduct(any(Integer.class));
+		verify(validationUtilsMock, times(1)).hasUserAlreadyPurchasedProduct(any(User.class), any(Product.class));
+		verify(servletContextMock, times(1)).getAttribute(any(String.class));
 		verifyNoMoreInteractions(validationUtilsMock);
 		verifyNoMoreInteractions(servletContextMock);
 
@@ -229,19 +229,19 @@ public class PurchaseServiceImplTest {
 		when(validationUtilsMock.hasUserAlreadyPurchasedProduct(any(User.class), any(Product.class)))
 				.thenReturn(false);
 		when(((Map<Integer, Integer>)servletContextMock.getAttribute(any(String.class)))).thenReturn(stockMapMock);
-		doNothing().when(purchaseUtilsMock).createPurchaseOrder(user, product);
+		doNothing().when(purchaseUtilsMock).createPurchaseOrder(any(User.class), any(Product.class));
 
 		MessageDTO successMessage = purchaseServiceImplMock.purchaseProduct(purchaseDTO);
-		verify(environmentMock,times(1)).getProperty("user.purchase.time.start");
+		verify(environmentMock,times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
-		verify(validationUtilsMock, times(1)).validateUser(user.getId());
-		verify(validationUtilsMock, times(1)).validateProduct(product.getId());
-		verify(validationUtilsMock, times(1)).hasUserAlreadyPurchasedProduct(user, product);
-		verify(servletContextMock, times(1)).getAttribute("stock");
-		verify(servletContextMock, times(1)).setAttribute("stock", stockMapMock);
+		verify(validationUtilsMock, times(1)).validateUser(any(Integer.class));
+		verify(validationUtilsMock, times(1)).validateProduct(any(Integer.class));
+		verify(validationUtilsMock, times(1)).hasUserAlreadyPurchasedProduct(any(User.class), any(Product.class));
+		verify(servletContextMock, times(1)).getAttribute(any(String.class));
+		verify(servletContextMock, times(1)).setAttribute(any(String.class), any(Map.class));
 		verifyNoMoreInteractions(validationUtilsMock);
 		verifyNoMoreInteractions(servletContextMock);
-		verify(purchaseUtilsMock, times(1)).createPurchaseOrder(user, product);
+		verify(purchaseUtilsMock, times(1)).createPurchaseOrder(any(User.class), any(Product.class));
 		verifyNoMoreInteractions(purchaseUtilsMock);
 		
 		assertThat(successMessage.getMessage(), is("Order placed Successfully"));

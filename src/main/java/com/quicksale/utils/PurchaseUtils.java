@@ -82,6 +82,9 @@ public class PurchaseUtils {
 
 			// Updated user purchase count for the product
 			updateUserPurchaseCount(user, product);
+			
+			// send order success email to the user
+			emailUtils.sendPurchaseEmailSuccess(user, product);
 		} catch (Exception e) {
 			// In case of error update the stock as the purchase was unsuccessful
 			updateStockOnContext(product);
@@ -89,8 +92,6 @@ public class PurchaseUtils {
 			emailUtils.sendPurchaseEmailFailure(user, product);
 			throw new APIException("Failed to place purchase order", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		// send order success email to the user
-		emailUtils.sendPurchaseEmailSuccess(user, product);
 	}
 
 	/**

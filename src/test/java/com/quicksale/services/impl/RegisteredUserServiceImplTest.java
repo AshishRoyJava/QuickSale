@@ -59,7 +59,7 @@ public class RegisteredUserServiceImplTest {
 
 		registeredUserServiceMock.registerForSale(userRegistrationDTO);
 
-		verify(environmentMock, times(1)).getProperty("user.registration.time.limit");
+		verify(environmentMock, times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
 
 	}
@@ -84,12 +84,12 @@ public class RegisteredUserServiceImplTest {
 				.thenReturn(registeredUser);
 
 		registeredUserServiceMock.registerForSale(userRegistrationDTO);
-		verify(registeredUserRepositoryMock, times(1)).findByUserAndProduct(user, product);
+		verify(registeredUserRepositoryMock, times(1)).findByUserAndProduct(any(User.class), any(Product.class));
 		verifyNoMoreInteractions(registeredUserRepositoryMock);
-		verify(environmentMock,times(1)).getProperty("user.registration.time.limit");
+		verify(environmentMock,times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
-		verify(validationUtilsMock, times(1)).validateUser(user.getId());
-		verify(validationUtilsMock, times(1)).validateProduct(product.getId());
+		verify(validationUtilsMock, times(1)).validateUser(any(Integer.class));
+		verify(validationUtilsMock, times(1)).validateProduct(any(Integer.class));
 		verifyNoMoreInteractions(validationUtilsMock);
 
 	}
@@ -116,14 +116,14 @@ public class RegisteredUserServiceImplTest {
 		
 		ArgumentCaptor<RegisteredUser> registeredUserArg = ArgumentCaptor.forClass(RegisteredUser.class);
 		verify(registeredUserRepositoryMock, times(1)).save(registeredUserArg.capture());
-		verify(registeredUserRepositoryMock, times(1)).findByUserAndProduct(user, product);
+		verify(registeredUserRepositoryMock, times(1)).findByUserAndProduct(any(User.class), any(Product.class));
 		verifyNoMoreInteractions(registeredUserRepositoryMock);
-		verify(environmentMock,times(1)).getProperty("user.registration.time.limit");
+		verify(environmentMock,times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
-		verify(validationUtilsMock, times(1)).validateUser(user.getId());
-		verify(validationUtilsMock, times(1)).validateProduct(product.getId());
+		verify(validationUtilsMock, times(1)).validateUser(any(Integer.class));
+		verify(validationUtilsMock, times(1)).validateProduct(any(Integer.class));
 		verifyNoMoreInteractions(validationUtilsMock);
-		verify(emailUtilsMock,times(1)).sendRegistrationConfirmationEmail(user, product);
+		verify(emailUtilsMock,times(1)).sendRegistrationConfirmationEmail(any(User.class), any(Product.class));
 		verifyNoMoreInteractions(emailUtilsMock);
 
 		RegisteredUser model = registeredUserArg.getValue();
@@ -155,12 +155,12 @@ public class RegisteredUserServiceImplTest {
 		
 		ArgumentCaptor<RegisteredUser> registeredUserArg = ArgumentCaptor.forClass(RegisteredUser.class);
 		verify(registeredUserRepositoryMock, times(1)).save(registeredUserArg.capture());
-		verify(registeredUserRepositoryMock, times(1)).findByUserAndProduct(user, product);
+		verify(registeredUserRepositoryMock, times(1)).findByUserAndProduct(any(User.class), any(Product.class));
 		verifyNoMoreInteractions(registeredUserRepositoryMock);
-		verify(environmentMock,times(1)).getProperty("user.registration.time.limit");
+		verify(environmentMock,times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
-		verify(validationUtilsMock, times(1)).validateUser(user.getId());
-		verify(validationUtilsMock, times(1)).validateProduct(product.getId());
+		verify(validationUtilsMock, times(1)).validateUser(any(Integer.class));
+		verify(validationUtilsMock, times(1)).validateProduct(any(Integer.class));
 		verifyNoMoreInteractions(validationUtilsMock);
 		
 	}
@@ -172,7 +172,7 @@ public class RegisteredUserServiceImplTest {
 		when(environmentMock.getProperty(any(String.class))).thenReturn("2019/09/10 abcd 12:00:00");
 		registeredUserServiceMock.registerForSale(userRegistrationDTO);
 		verifyZeroInteractions(registeredUserRepositoryMock);
-		verify(environmentMock,times(1)).getProperty("user.registration.time.limit");
+		verify(environmentMock,times(1)).getProperty(any(String.class));
 		verifyNoMoreInteractions(environmentMock);
 		
 	}
