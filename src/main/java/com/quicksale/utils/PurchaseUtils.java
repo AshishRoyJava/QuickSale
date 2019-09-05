@@ -90,7 +90,7 @@ public class PurchaseUtils {
 			updateStockOnContext(product);
 			// send order failure email to the user
 			emailUtils.sendPurchaseEmailFailure(user, product);
-			throw new APIException("Failed to place purchase order", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new APIException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
