@@ -43,8 +43,8 @@ public class QuickSaleApplication {
 	@Bean
 	public CommandLineRunner loadUsers(UserRepository userRepository) {
 
-		Stream<String> userStream = Stream.of("ABC, Hyderabad, ashishroy077@gmail.com",
-				"DEF, Hyderabad, def@gmail.com");
+		Stream<String> userStream = Stream.of("ABC, Hyderabad, abc@gmail.com",
+				"DEF, Hyderabad, def@gmail.com","GHI, Hyderabad, ghi@gmail.com","JKL, Hyderabad, jkl@gmail.com","MNO, Hyderabad, mno@gmail.com");
 
 		List<User> users = new ArrayList<>();
 		userStream.forEach(userString -> {
@@ -77,7 +77,7 @@ public class QuickSaleApplication {
 		return args -> {
 			products.forEach(product -> {
 				Product savedProduct = productRepository.save(product);
-				Inventory inventory = new Inventory(savedProduct, 20);
+				Inventory inventory = new Inventory(savedProduct, 2);
 				inventoryRepository.save(inventory);
 			});
 		};
