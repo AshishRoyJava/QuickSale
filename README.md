@@ -27,13 +27,10 @@ POST - http://localhost:8080/purchases/new  - the user places purchase order usi
 
 GET - http://localhost:8080/purchases/all  - lists all the orders made, provides details of the users and the products.
 
-# ER Diagram and Class Diagram
+# ER Diagram 
 
-### ERDiagram - 
 ![ERD](https://user-images.githubusercontent.com/19311770/64603523-31032180-d3de-11e9-8b97-1c72d84833ec.png)
 
-### ClassDiagram - 
-![QuickSaleClassDiagram](https://user-images.githubusercontent.com/19311770/64603651-598b1b80-d3de-11e9-818b-3e8d40753215.jpg)
 
 # Business Logic
 
